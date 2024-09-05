@@ -1,0 +1,8 @@
+{
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "moleculer": "^0.14.34"
+  }
+}
