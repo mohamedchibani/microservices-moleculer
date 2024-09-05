@@ -1,22 +1,23 @@
-import { ServiceBroker } from "moleculer";
-
-const broker = new ServiceBroker();
-
-// greater service
-broker.createService({
-  name: "greeter",
-  actions: {
-    sayHello(ctx) {
-      return `Hello ${ctx.params.name}`;
-    },
-  },
-});
+import UserService from "./services/user.service.js";
 
 async function startApp() {
-  await broker.start();
-  const res = await broker.call("greeter.sayHello", { name: "Mohamed" });
-  console.log(res);
-  broker.stop();
+  // start services
+  await UserService.start();
+
+  try {
+    // simulate user creation
+    const newUser = await UserService.call("user.createUser", {
+      username: "mchibani",
+      email: "mohamed.chibani@email.com",
+    });
+    console.log("New User Created", newUser);
+    const users = await UserService.call("user.getUsers");
+    console.log("All users", users);
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    await UserService.stop();
+  }
 }
 
 startApp();
